@@ -4,48 +4,54 @@
 void		first_init(t_map *map)
 {
   int		i;
+  key_t		cur_key;
 
-  i = 0;
-  map->shm_id = shmget(map->key, sizeof(int) * COL_NBR, IPC_CREAT | SHM_R | SHM_W);
+  i = 1;
   printf("Created %d columns\n", COL_NBR);
-
-  map->head = shmat(map->shm_id, NULL, SHM_R | SHM_W);
-  while (i != LIN_NBR)
+  map->head_id = shmget(map->head_key, sizeof(int) * COL_NBR, IPC_CREAT | SHM_R | SHM_W);
+  map->head = shmat(map->head_id, NULL, SHM_R | SHM_W);
+  while (i != COL_NBR + 1)
     {
+      cur_key = ftok(map->cwd, i);
+      map->head[i - 1] = shmget(cur_key, sizeof(char) * LIN_NBR, IPC_CREAT | SHM_R | SHM_W);
       i++;
     }
 }
 
+char		getCase(int x, int y, t_map *map)
+{
+      int id;
+      char *tmp;
+      id = map->head[y];
+      tmp = shmat(id, NULL, SHM_R | SHM_W);
+      return (tmp[x]);
+}
+
 void		init(t_map *map)
 {
-  map->shm_id = shmget(map->key, 42, SHM_R | SHM_W);
-  if (map->shm_id == -1)
+  map->cwd = getcwd (0, 0);
+  map->head_key = ftok(map->cwd, 0);
+  map->head_id = shmget(map->head_key, sizeof(int) * COL_NBR, SHM_R | SHM_W);
+  if (map->head_id == -1)
     {
       first_init(map);
+      int id;
+      char *tmp;
+      id = map->head[4];
+      tmp = shmat(id, NULL, SHM_R | SHM_W);
+      tmp[12] = 'a';
+      puts("put an 'a' in case 12 of 4 tht line");
     }
   else
     {
-      printf("Using shared memory segment %d\n", map->shm_id);
-      map->head = shmat(map->shm_id, NULL, SHM_R | SHM_W);
-      printf("Reading message from shared memory : %s\n", (char *)(map->head));
-      shmctl(map->shm_id, IPC_RMID, NULL);
+      map->head = shmat(map->head_id, NULL, SHM_R | SHM_W);      
+      puts("else");
+      printf("%c\n", getCase(12, 4, map));
+      shmctl(map->head_id, IPC_RMID, NULL);
     }
 }
 
-key_t		parse_arg(int ac, char **av)
+int		parse_arg(t_map *map)
 {
-  key_t		key;
-  if (ac != 2)
-    {
-      puts("Usage : ./lemipc pathname");
-      return (-1);
-    }
-  key = ftok(av[1], 0);
-  printf("I created a key for shared memory : %d\n", key);
-  if (key == -1)
-  {
-    puts("Error on creating key, check your pathname");
-    return (-1);
-  }
-  return (key);
+  return (map->head_id);
 }

@@ -1,12 +1,11 @@
 
 #include "lemipc.h"
 
-int		main(int ac, char **av)
+int		main()
 { 
-  t_map		map;		
-  
-  if ((map.key = parse_arg(ac, av)) == -1)
-    return (-1);
+  t_map		map;
+
+  parse_arg(&map);
   init(&map);
   return (0);
 }
