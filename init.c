@@ -26,16 +26,26 @@ void		init_head(t_map *map)
   map->head_id = shmget(map->head_key, sizeof(int) * COL_NBR, SHM_R | SHM_W);
 }
 
-void		init(t_map *map)
+void		init(t_map *map, t_ia *ia, int ac, char **av)
 {
   init_head(map);
   if (map->head_id == -1)
     first_init(map);
   map->head = shmat(map->head_id, NULL, SHM_R | SHM_W);      
-  shmctl(map->head_id, IPC_RMID, NULL);
+  init_ia(ia, parse_arg(ac, av), map);
 }
 
-int		parse_arg(t_map *map)
+char		parse_arg(int ac, char **av)
 {
-  return (map->head_id);
+  char		ret;
+
+  if (ac == 1)
+    return (1);
+  ret = atoi(av[1]);
+  if (ret < 0 || ret > 10)
+    {
+      puts("Team is not include between 0 and 10, set team 1 instead");
+      return (1);
+    }
+  return (ret);
 }

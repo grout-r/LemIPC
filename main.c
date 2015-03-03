@@ -1,16 +1,15 @@
 
 #include "lemipc.h"
 
-int		main()
+int		main(int ac, char **av)
 { 
   t_map		map;
   t_ia		ia;
 
   srand(time(NULL));
-  parse_arg(&map);
-  init(&map);
-  init_ia(&ia, 6, &map);
-  war(&map, &ia);
+  init(&map, &ia, ac, av);
   dump_map(&map);
+  war(&map, &ia);
+  //shmctl(map.head_id, IPC_RMID, NULL);
   return (0);
 }

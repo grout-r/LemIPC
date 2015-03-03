@@ -35,8 +35,8 @@ typedef struct	s_ia
 }t_ia;
 
 void		first_init(t_map *map);
-void		init(t_map *map);
-int		parse_arg(t_map *map);
+void		init(t_map *map, t_ia *ia, int ac, char **av);
+char		parse_arg(int ac, char **av);
 void		init_head(t_map *map);
 char		get_case(int x, int y, t_map *map);
 int		get_rand();

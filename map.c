@@ -32,6 +32,7 @@ void		dump_map(t_map *map)
       id = map->head[i];
       tmp = shmat(id, NULL, SHM_R | SHM_W);
       y = 0;
+      printf("%d     : ", i);
       while (y != COL_NBR)
 	printf("%c", tmp[y++] + 48);
       printf("\n");
