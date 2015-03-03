@@ -7,7 +7,9 @@ CFLAGS =	-Wall -Werror -Wextra -g3
 LDFLAGS =	
 
 SRC =		main.c \
-	        init.c
+	        init.c \
+		map.c \
+		ia.c
 
 OBJ =		$(SRC:.c=.o)
 
