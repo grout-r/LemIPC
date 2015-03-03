@@ -8,6 +8,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <time.h>
+# include <string.h>
 
 # define COL_NBR 100
 # define LIN_NBR 100
@@ -33,13 +34,16 @@ typedef struct	s_ia
   int	y;
 }t_ia;
 
-void	first_init(t_map *map);
-void	init(t_map *map);
-int	parse_arg(t_map *map);
-void	init_head(t_map *map);
-char	get_case(int x, int y, t_map *map);
-int	get_rand();
-void	gree_space(t_ia *ia, t_map *map);
-void	init_ia(t_ia *ia, char team, t_map *map);
+void		first_init(t_map *map);
+void		init(t_map *map);
+int		parse_arg(t_map *map);
+void		init_head(t_map *map);
+char		get_case(int x, int y, t_map *map);
+int		get_rand();
+void		init_pos(t_ia *ia, t_map *map);
+void		init_ia(t_ia *ia, char team, t_map *map);
+void		dump_map(t_map *map);
+void		change_case(int x, int y, t_map *map, char value);
+void		war(t_map *map, t_ia *ia);
 
 #endif

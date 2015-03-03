@@ -9,6 +9,7 @@ LDFLAGS =
 SRC =		main.c \
 	        init.c \
 		map.c \
+		init_ia.c \
 		ia.c
 
 OBJ =		$(SRC:.c=.o)
