@@ -35,6 +35,14 @@ typedef struct	s_ia
   int	y;
 }t_ia;
 
+typedef struct s_msg
+{
+  long		mtype;
+  char		str[32];
+  int		x;
+  int		y;
+}		t_msg;
+
 void		first_init(t_map *map);
 void		init(t_map *map, t_ia *ia, int ac, char **av);
 char		parse_arg(int ac, char **av);

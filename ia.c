@@ -1,11 +1,4 @@
-
 #include "lemipc.h"
-
-typedef struct	s_msg
-{
-  long	mtype;
-  char	str[64];
-}	t_msg;
 
 void		war(t_map *map, t_ia *ia)
 {
