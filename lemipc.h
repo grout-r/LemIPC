@@ -50,7 +50,7 @@ void		first_init(t_map *map);
 void		init(t_map *map, t_ia *ia, int ac, char **av);
 char		parse_arg(int ac, char **av);
 void		init_head(t_map *map);
-char		get_case(int x, int y, t_map *map);
+char		get_case(t_pos *pos,  t_map *map);
 int		get_rand();
 void		init_pos(t_ia *ia, t_map *map);
 void		init_ia(t_ia *ia, char team, t_map *map);
