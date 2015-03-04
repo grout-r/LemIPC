@@ -1,8 +1,8 @@
 #include "lemipc.h"
 
-void		move()
+void		move(t_ia *ia, t_map *map)
 {
-  
+  change_case(
 
 }
 

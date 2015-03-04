@@ -1,4 +1,3 @@
-
 #include "lemipc.h"
 
 void		change_case(int x, int y, t_map *map, char value)
