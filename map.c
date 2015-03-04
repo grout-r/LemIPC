@@ -3,20 +3,56 @@
 
 void		change_case(int x, int y, t_map *map, char value)
 {
-      int id;
-      char *tmp;
-      id = map->head[y];
-      tmp = shmat(id, NULL, SHM_R | SHM_W);
-      tmp[x] = value;
+  int id;
+  char *tmp;
+  id = map->head[y];
+  tmp = shmat(id, NULL, SHM_R | SHM_W);
+  tmp[x] = value;
 }
 
-char		get_case(int x, int y, t_map *map)
+char		get_case(t_pos *pos,  t_map *map)
 {
-      int id;
-      char *tmp;
-      id = map->head[y];
-      tmp = shmat(id, NULL, SHM_R | SHM_W);
-      return (tmp[x]);
+  int id;
+  char *tmp;
+  id = map->head[pos->y];
+  tmp = shmat(id, NULL, SHM_R | SHM_W);
+  return (tmp[pos->x]);
+}
+
+t_pos		check_around(t_pos *pos, t_map *map, t_ia *ia)
+{
+  t_pos		tmp;
+  int		segment;
+
+  if (get_case(pos, map) != 0 && get_case(pos, map) != ia->team)
+    return (t_pos);
+  pos->x--;
+  pos->y--;
+  segment = 3;    
+  while (segment < 10)
+    {
+      tmp->x = pos->x;
+      tmp->y = pos->y;
+      while (tmp->x != pos->x + (segment - 1))
+	{
+	  tmp->x++;
+	}
+      while (tmp->y != pos-> + (segment - 1))
+	{
+	  tmp->y++;
+	}
+      while (tmp->x != pos->x)
+	{
+	  tmp->x--;
+	}
+      while (tmp->y != pos-y)
+	{
+	  tmp->y--;
+	}
+      segment += 2;
+      pos->x--;
+      pos->y--;
+    }
 }
 
 void		dump_map(t_map *map)
