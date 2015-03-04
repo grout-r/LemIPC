@@ -1,5 +1,5 @@
  
-# include "lemipc.h"
+#include "lemipc.h"
 
 void		first_init(t_map *map)
 {
@@ -40,12 +40,12 @@ char		parse_arg(int ac, char **av)
   char		ret;
 
   if (ac == 1)
-    return (1);
+    return (random() % 10);
   ret = atoi(av[1]);
   if (ret < 0 || ret > 10)
     {
-      puts("Team is not include between 0 and 10, set team 1 instead");
-      return (1);
+      puts("Team is not include between 0 and 10, set team random instead");
+      return (random() % 10);
     }
   return (ret);
 }
