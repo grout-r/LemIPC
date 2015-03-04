@@ -1,6 +1,5 @@
 #include "lemipc.h"
 
-
 int		msg(t_msg *msg, t_ia *ia)
 {
   int		id_msg;
@@ -16,7 +15,6 @@ int		msg(t_msg *msg, t_ia *ia)
     }
   else
     {
-      printf("using msgq %d\n", id_msg);
       bzero(&msg, sizeof(msg));
       msgsnd(id_msg, &msg, sizeof(msg), 0);
       msgctl(id_msg, IPC_RMID, NULL);
