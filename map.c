@@ -3,8 +3,9 @@
 
 void		change_case(int x, int y, t_map *map, char value)
 {
-  int id;
-  char *tmp;
+  int		id;
+  char		*tmp;
+
   id = map->head[y];
   tmp = shmat(id, NULL, SHM_R | SHM_W);
   tmp[x] = value;
@@ -12,8 +13,9 @@ void		change_case(int x, int y, t_map *map, char value)
 
 char		get_case(t_pos *pos,  t_map *map)
 {
-  int id;
-  char *tmp;
+  int		id;
+  char		*tmp;
+
   id = map->head[pos->y];
   tmp = shmat(id, NULL, SHM_R | SHM_W);
   return (tmp[pos->x]);
