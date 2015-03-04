@@ -4,6 +4,7 @@
 # include <sys/ipc.h>
 # include <sys/types.h>
 # include <sys/shm.h>
+# include <sys/msg.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -33,6 +34,14 @@ typedef struct	s_ia
   int	x;
   int	y;
 }t_ia;
+
+typedef struct s_msg
+{
+  long		mtype;
+  char		str[32];
+  int		x;
+  int		y;
+}		t_msg;
 
 void		first_init(t_map *map);
 void		init(t_map *map, t_ia *ia, int ac, char **av);
