@@ -38,6 +38,7 @@ typedef struct	s_ia
   char		team;
   char		status;
   t_pos		pos;
+  t_pos		target_pos;
 }		t_ia;
 
 typedef struct	s_msg
