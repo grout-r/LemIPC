@@ -17,30 +17,33 @@
 # define IDLE   1
 # define WAR   2
 
+typedef struct	s_pos
+{
+  int		x;
+  int		y;
+}		t_pos;
+
 typedef struct	s_map
 {
-  int	*head;
-  int	head_id;
-  key_t	head_key;
-  char	*cwd;
-}	t_map;
+  int		*head;
+  int		head_id;
+  key_t		head_key;
+  char		*cwd;
+}		t_map;
 
 typedef struct	s_ia
 {
-  int	shm_id;
-  key_t	key;
-  char	team;
-  char	status;
-  int	x;
-  int	y;
-}t_ia;
+  int		shm_id;
+  key_t		key;
+  char		team;
+  char		status;
+  t_pos		pos;
+}		t_ia;
 
-typedef struct s_msg
+typedef struct	s_msg
 {
   long		mtype;
-  char		str[32];
-  int		x;
-  int		y;
+  t_pos		pos;
 }		t_msg;
 
 void		first_init(t_map *map);
@@ -55,4 +58,4 @@ void		dump_map(t_map *map);
 void		change_case(int x, int y, t_map *map, char value);
 void		war(t_map *map, t_ia *ia);
 
-#endif
+#endif	/* LEMIPC_H_ */
