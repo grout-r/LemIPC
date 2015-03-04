@@ -1,27 +1,42 @@
 #include "lemipc.h"
 
-void		war(t_map *map, t_ia *ia)
+int		msg(t_msg *msg, t_ia *ia)
 {
-  key_t	lb_key;
-  int	lb_id;
-  t_msg	msg;
+  int		id_msg;
 
-  lb_key = ftok(map->cwd, ia->team);
-  printf("Key %d\n", lb_key);
-  lb_id = msgget(lb_key, SHM_R | SHM_W);
-   if (lb_id == -1)
+  printf("%d\n", ia->key);
+  id_msg = msgget(ia->key, SHM_R | SHM_W);
+  printf("%d\n", id_msg);
+  if (id_msg == -1)
     {
-      lb_id = msgget(lb_key, IPC_CREAT | SHM_R | SHM_W);
-      printf("MsgQ %d\n", lb_id);
-      msgrcv(lb_id, &msg, sizeof(msg), 12, 0);
-      printf("%s\n", msg.str);
+      id_msg = msgget(ia->key, IPC_CREAT | SHM_R | SHM_W);
+      printf("create msgq %d\n", msgget(ia->key, IPC_CREAT | SHM_R | SHM_W));
+      msgrcv(id_msg, &msg, sizeof(msg), 42, 0);
     }
   else
     {
       bzero(&msg, sizeof(msg));
-      msg.mtype = 12;
-      sprintf(msg.str, "Coucou, tu veut voir ma bite ?");
-      msgsnd(lb_id, &msg, sizeof(msg), 0);
-      msgctl(lb_id, IPC_RMID, NULL);
+      msgsnd(id_msg, &msg, sizeof(msg), 0);
+      msgctl(id_msg, IPC_RMID, NULL);
     }
+  return (0);
+}
+
+t_msg	construct_msg(int x, int y, int type)
+{
+  t_msg		msg;
+
+  msg.pos.y = x;
+  msg.pos.y = y; 
+  msg.mtype = type;
+  return (msg);
+}
+
+void		war(t_map *map, t_ia *ia)
+{
+  if (map == NULL)
+    puts("lel");
+  if (ia == NULL)
+    puts("lel");
+  //  while (42);
 }
