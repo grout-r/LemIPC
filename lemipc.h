@@ -67,5 +67,6 @@ void		init_ia(t_ia *ia, char team, t_map *map);
 void		dump_map(t_map *map);
 void		change_case(t_pos *pos, t_map *map, char value);
 void		war(t_map *map, t_ia *ia);
+t_pos		check_around(t_pos *pos, t_map *map, t_ia *ia);
 
 #endif	/* LEMIPC_H_ */
