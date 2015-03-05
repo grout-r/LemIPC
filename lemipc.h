@@ -56,17 +56,22 @@ typedef struct	s_scan
   int		segment;
 }		t_scan;
 
+int		create_msgq(t_ia *ia);
+int		msg_receive(t_msg *msg, t_ia *ia);
+int		msg_send(t_msg *msg, t_ia *ia);
+t_msg		construct_msg(int x, int y, int type);
+void		init_pos(t_ia *ia, t_pos *pos);
 void		first_init(t_map *map);
 void		init(t_map *map, t_ia *ia, int ac, char **av);
 char		parse_arg(int ac, char **av);
 void		init_head(t_map *map);
 char		get_case(t_pos *pos,  t_map *map);
 int		get_rand();
-void		init_pos(t_ia *ia, t_map *map);
+void		init_ia_pos(t_ia *ia, t_map *map);
 void		init_ia(t_ia *ia, char team, t_map *map);
 void		dump_map(t_map *map);
 void		change_case(t_pos *pos, t_map *map, char value);
-void		war(t_map *map, t_ia *ia);
+int		war(t_pos *pos, t_map *map, t_ia *ia, t_msg msg);
 int		check_around(t_pos *pos, t_map *map, t_ia *ia);
 
 #endif	/* LEMIPC_H_ */
