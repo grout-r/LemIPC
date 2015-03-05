@@ -21,7 +21,7 @@ void	init_pos(t_ia  *ia, t_map *map)
     {
       ia->pos.x = get_rand();
       ia->pos.y = get_rand();
-    } while (get_case(ia->pos.x, ia->pos.y, map) != 0);
+    } while (get_case(&(ia->pos), map) != 0);
 }
 
 void	init_ia(t_ia *ia, char team, t_map *map)
@@ -31,5 +31,5 @@ void	init_ia(t_ia *ia, char team, t_map *map)
   ia->key = ftok(getcwd(0,0), (int)team);
   init_pos(ia, map);
   printf("x : %d  - y : %d \n", ia->pos.x, ia->pos.y);
-  change_case(ia->pos, map, team);
+  change_case(&(ia->pos), map, team);
 }
