@@ -29,11 +29,11 @@ typedef struct	s_map
   int		head_id;
   key_t		head_key;
   char		*cwd;
+  char		first;
 }		t_map;
 
 typedef struct	s_ia
 {
-  int		shm_id;
   key_t		key;
   char		team;
   char		status;
@@ -73,5 +73,8 @@ void		dump_map(t_map *map);
 void		change_case(t_pos *pos, t_map *map, char value);
 int		war(t_pos *pos, t_map *map, t_ia *ia, t_msg msg);
 int		check_around(t_pos *pos, t_map *map, t_ia *ia);
+char		who_win(t_map *map);
+int		move(t_ia *ia, t_map *map, int new_x, int new_y);
+void		free_msg();
 
 #endif	/* LEMIPC_H_ */
