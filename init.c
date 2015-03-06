@@ -49,9 +49,9 @@ char		parse_arg(int ac, char **av)
   char		ret;
 
   if (ac == 1)
-    return (random() % 10);
+    return ((random() % 9) + 1);
   ret = atoi(av[1]);
-  if (ret < 0 || ret > 10)
+  if (ret <= 0 || ret >= 10)
     {
       puts("Team is not include between 0 and 10, set team random instead");
       return (random() % 10);
