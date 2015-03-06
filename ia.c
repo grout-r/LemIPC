@@ -5,7 +5,7 @@
 ** Login   <giudici@epitech.net>
 ** 
 ** Started on  Thu Mar  5 16:45:44 2015 Giudici
-** Last update Thu Mar  5 21:46:48 2015 Giudici
+** Last update Fri Mar  6 16:41:10 2015 Giudici
 */
 
 #include "lemipc.h"
@@ -57,7 +57,7 @@ int		war(t_pos *pos, t_map *map, t_ia *ia, t_msg  msg)
   else
     {
       printf("entre ici si t'es deuxième\n");
-      if (check_around(pos, map, ia) == -1) {
+      if (check_around(pos, map, ia, 50) == -1) {
 	printf("%d = x || %d = y\n", ia->target_pos.x, ia->target_pos.y);
 	return (-1);
       }

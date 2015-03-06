@@ -5,7 +5,7 @@
 ** Login   <giudici@epitech.net>
 ** 
 ** Started on  Thu Mar  5 15:09:28 2015 Giudici
-** Last update Thu Mar  5 17:50:15 2015 Giudici
+** Last update Fri Mar  6 16:21:00 2015 Giudici
 */
  
 #include "lemipc.h"
@@ -33,6 +33,7 @@ void		init_head(t_map *map)
   map->cwd = getcwd (0, 0);
   map->head_key = ftok(map->cwd, 0);
   map->head_id = shmget(map->head_key, sizeof(int) * COL_NBR, SHM_R | SHM_W);
+  map->nb_team = 0;
 }
 
 void		init(t_map *map, t_ia *ia, int ac, char **av)

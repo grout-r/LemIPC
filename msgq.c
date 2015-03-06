@@ -5,7 +5,7 @@
 ** Login   <giudici@epitech.net>
 ** 
 ** Started on  Wed Mar  4 15:50:27 2015 Giudici
-** Last update Thu Mar  5 21:35:55 2015 Giudici
+** Last update Fri Mar  6 17:07:52 2015 Giudici
 */
 
 #include "lemipc.h"
@@ -25,10 +25,8 @@ int		msg_receive(t_msg *msg, t_ia *ia)
   int		id_msg;
 
   id_msg = msgget(ia->key, SHM_R | SHM_W);
-  if (id_msg == -1) {
-    putchar('z');
-      return (-1);
-    }
+  if (id_msg == -1)
+    return (-1);
   msgrcv(id_msg, msg, sizeof(msg), (int)ia->team, 0);
   printf("\n\n\n\nmsg ------ x = %d && y = %d ----- \n\n\n", msg->pos.x, msg->pos.y);
   ia->target_pos.x = msg->pos.x;

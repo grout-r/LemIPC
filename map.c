@@ -5,7 +5,7 @@
 ** Login   <giudici@epitech.net>
 ** 
 ** Started on  Thu Mar  5 17:48:23 2015 Giudici
-** Last update Thu Mar  5 19:27:23 2015 Giudici
+** Last update Fri Mar  6 16:41:50 2015 Giudici
 */
 
 #include "lemipc.h"
@@ -27,7 +27,7 @@ char		get_case(t_pos *pos,  t_map *map)
 
   id = map->head[pos->y];
   tmp = shmat(id, NULL, SHM_R | SHM_W);
-  if (x < 0 || x > 100 || y < 0 || y > 100)
+  if (pos->x < 0 || pos->x > 100 || pos->y < 0 || pos->y > 100)
     return (-1);
   return (tmp[pos->x]);
 }

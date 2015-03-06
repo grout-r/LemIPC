@@ -25,6 +25,7 @@ typedef struct	s_pos
 
 typedef struct	s_map
 {
+  int		nb_team;
   int		*head;
   int		head_id;
   key_t		head_key;
@@ -56,6 +57,13 @@ typedef struct	s_scan
   int		segment;
 }		t_scan;
 
+typedef struct	s_refresh
+{
+  t_pos		old_pos;
+  t_pos		new_pos;
+  char		team;
+}		t_refresh;
+
 int		create_msgq(t_ia *ia);
 int		msg_receive(t_msg *msg, t_ia *ia);
 int		msg_send(t_msg *msg, t_ia *ia);
@@ -72,7 +80,7 @@ void		init_ia(t_ia *ia, char team, t_map *map);
 void		dump_map(t_map *map);
 void		change_case(t_pos *pos, t_map *map, char value);
 int		war(t_pos *pos, t_map *map, t_ia *ia, t_msg msg);
-int		check_around(t_pos *pos, t_map *map, t_ia *ia);
+int		check_around(t_pos *pos, t_map *map, t_ia *ia, int i);
 char		who_win(t_map *map);
 int		move(t_ia *ia, t_map *map, int new_x, int new_y);
 void		free_msg();
