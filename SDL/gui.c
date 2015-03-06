@@ -73,6 +73,7 @@ void		colorize_player(SDL_Surface *player, char team, t_gui *gui)
 
 void		init_color(int *color)
 {
+  color[0] = 0x000000;
   color[1] = 0x5958A3;
   color[2] = 0xE61732;
   color[3] = 0x17E6C0;
