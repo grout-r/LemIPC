@@ -5,7 +5,7 @@
 ** Login   <giudici@epitech.net>
 ** 
 ** Started on  Thu Mar  5 16:41:04 2015 Giudici
-** Last update Thu Mar  5 21:36:57 2015 Giudici
+** Last update Fri Mar  6 15:32:38 2015 Giudici
 */
 
 #include "lemipc.h"
@@ -34,5 +34,6 @@ int		main(int ac, char **av)
   //msg = msg;
   //free_msg();
   //shmctl(map.head_id, IPC_RMID, NULL);
+  dump_map(&map);
   return (0);
 }
