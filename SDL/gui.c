@@ -90,8 +90,6 @@ void		load_player(int x, int y, char team,  t_gui *gui)
   SDL_Surface	*player;
   SDL_Rect	pos;
 
-  if (team == 0)
-    return;
   pos.x = x * 10;
   pos.y = y * 10;
   player = SDL_CreateRGBSurface(SDL_HWSURFACE, 10, 10, 32, 0, 0, 0, 0);
