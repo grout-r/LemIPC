@@ -114,9 +114,7 @@ void		dump_map_gui(int *head, t_gui *gui)
       y = 0;
       while (y != COL_NBR)
 	{
-	  if (tmp[y] != 0)
 	    load_player(i, y, tmp[y], gui);
-	  y++;
 	}
       i++; 
     }
