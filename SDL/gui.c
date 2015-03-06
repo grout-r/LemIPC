@@ -73,6 +73,7 @@ void	colorize_player(SDL_Surface *player, char team, t_gui *gui)
 
 void	init_color(int *color)
 {
+  color[0] = 0x000000;
   color[1] = 0x5958A3;
   color[2] = 0xE61732;
   color[3] = 0x17E6C0;
@@ -89,8 +90,6 @@ void	load_player(int x, int y, char team,  t_gui *gui)
   SDL_Surface	*player;
   SDL_Rect	pos;
 
-  if (team == 0)
-    return;
   pos.x = x * 10;
   pos.y = y * 10;
   player = SDL_CreateRGBSurface(SDL_HWSURFACE, 10, 10, 32, 0, 0, 0, 0);
@@ -114,8 +113,7 @@ void	dump_map_gui(int *head, t_gui *gui)
       y = 0;
       while (y != COL_NBR)
 	{
-	  if (tmp[y] != 0)
-	    load_player(i, y, tmp[y], gui);
+	  load_player(i, y, tmp[y], gui);
 	  y++;
 	}
       i++; 
