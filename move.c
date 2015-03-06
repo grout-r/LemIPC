@@ -10,11 +10,13 @@
 
 #include "lemipc.h"
 
+
 int		move(t_ia *ia, t_map *map, int new_x, int new_y)
 {
   t_refresh	pos;
   int		id_msg;
 
+  bzero(&pos, sizeof(pos));
   pos.new_pos.x = new_x;
   pos.new_pos.y = new_y;
   if (get_case(&(pos.new_pos), map) == 0)
@@ -24,10 +26,11 @@ int		move(t_ia *ia, t_map *map, int new_x, int new_y)
   pos.old_pos.y = ia->pos.y;
   pos.team = ia->team;
   change_case(&(pos.old_pos), map, '0');
-  id_msg = msgget(42, SHM_R | SHM_W);
+  
+  id_msg = msgget(ftok(getcwd(0,0), 42), SHM_R | SHM_W);
   if (id_msg == -1)  
     return (-1);
-  msgsnd(id_msg, &pos, sizeof(pos), 42);
-  msgctl(id_msg, IPC_RMID, NULL);
+  msgsnd(id_msg, &pos, sizeof(pos), 0);
+  //msgctl(id_msg, IPC_RMID, NULL);
   return (0);
 }

@@ -47,7 +47,7 @@ int		war(t_pos *pos, t_map *map, t_ia *ia, t_msg  msg)
 {
   if (msgget(ia->key, SHM_R | SHM_W) == -1)
     {
-      printf("cacacacacacacacacacac\n");
+      printf("First process of my team, creating mailbox ...\n");
       if (create_msgq(ia) == -1)
 	return (-1);
       msg_receive(&msg, ia);

@@ -17,10 +17,6 @@ int		main(int ac, char **av)
   t_msg		msg;
   t_pos		pos;
 
-  if (ac != 2) {
-    puts("Usage : ./lemipc team\nthe team is a number between 1 and 10");
-    return (0);
-  }
   srand(time(NULL));
   init(&map, &ia, ac, av);
   //traitement
@@ -30,7 +26,8 @@ int		main(int ac, char **av)
   printf("ia info : team = %d, target_pos = %d - %d\n", ia.team, ia.target_pos.x, ia.target_pos.y);
   //dump_map(&map);
   //dump_map(&map);
-  war(&pos, &map, &ia, msg);
+  if (war(&pos, &map, &ia, msg) == -1)
+    return (-1);
   //msg = msg;
   //free_msg();
   //shmctl(map.head_id, IPC_RMID, NULL);

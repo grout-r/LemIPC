@@ -1,10 +1,11 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include "../lemipc.h"
+#include "lemipc.h"
 
 typedef struct	s_gui
 {
@@ -37,20 +38,6 @@ int		init_gui(t_gui *gui, int *color)
   SDL_Flip(gui->screen);
   gui->color = color;
   return (0);
-}
-
-int		*init_gui_map()
-{
-  char		*cwd;
-  key_t		map_key;
-  int		map_id;
-  int		*head;
-
-  cwd = getcwd(0, 0);
-  map_key = ftok(cwd, 0);
-  map_id = shmget(map_key, sizeof(char) * COL_NBR, SHM_R | SHM_W);
-  head = shmat(map_id, NULL, SHM_R | SHM_W);
-  return (head);
 }
 
 t_rgb		color_converter(int hex)
@@ -98,44 +85,51 @@ void		load_player(int x, int y, char team,  t_gui *gui)
   SDL_Flip(gui->screen);
 }
 
-void		dump_map_gui(int *head, t_gui *gui)
+int		dump_map_gui(t_gui *gui)
 {
-  int		i;
-  int		y;
-  int		id;
-  char		*tmp;
 
-  i = 0;
-  while (i != LIN_NBR)
+  key_t		msgkey;
+  int		msgid;
+  t_refresh	ref;
+
+  msgkey = ftok(getcwd(0, 0), 42);
+  msgid = msgget(msgkey, SHM_R | SHM_W);
+  puts("42");
+  if (msgid == -1)
     {
-      id = head[i];
-      tmp = shmat(id, NULL, SHM_R | SHM_W);
-      y = 0;
-      while (y != COL_NBR)
-	{
-	  load_player(i, y, tmp[y], gui);
-	  y++;
-	}
-      i++; 
+      msgid = msgget(msgkey, IPC_CREAT | SHM_R | SHM_W);
+      puts("a");
+      msgrcv(msgid, &ref, sizeof(ref), 42, 0);
+      puts("b");
+      load_player(ref.old_pos.x, ref.old_pos.y, 0, gui);
+      load_player(ref.new_pos.x, ref.new_pos.y, ref.team, gui);
+      printf("old = %d --- %d || new = %d --- %d || team %c \n", ref.old_pos.x, ref.old_pos.y, ref.new_pos.x, ref.new_pos.y, ref.team);
+      puts("c");
+      return (0);
     }
+  puts("d");
+  msgrcv(msgid, &ref, sizeof(ref), 0, 0);
+  putchar('e');
+  printf("old = %d --- %d || new = %d --- %d || team %c \n", ref.old_pos.x, ref.old_pos.y, ref.new_pos.x, ref.new_pos.y, ref.team);
+  load_player(ref.old_pos.x, ref.old_pos.y, 0, gui);
+  load_player(ref.new_pos.x, ref.new_pos.y, ref.team, gui);
+  return (0);
 }
 
 int		main()
 { 
   t_gui		gui;
-  int		*head;
   int		color[10];
   SDL_Event	event;
 
   init_color(color);
   if (init_gui(&gui, color) == -1)
     return (-1);
-  head = init_gui_map();
   SDL_PollEvent(&event);
   while(event.type != SDL_QUIT)
     {
       SDL_PollEvent(&event);
-      dump_map_gui(head, &gui);
+      dump_map_gui(&gui);
     }
   return 0;
 }

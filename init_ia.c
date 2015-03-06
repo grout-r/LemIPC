@@ -24,8 +24,11 @@ void	init_ia_pos(t_ia  *ia, t_map *map)
     } while (get_case(&(ia->pos), map) != 0);
 }
 
-void	init_ia(t_ia *ia, char team, t_map *map)
+void		init_ia(t_ia *ia, char team, t_map *map)
 {
+  t_refresh	ref;
+  int		id_msg;
+
   ia->team = team;
   ia->status = IDLE;
   ia->key = ftok(getcwd(0,0), (int)team);
@@ -34,4 +37,11 @@ void	init_ia(t_ia *ia, char team, t_map *map)
   change_case(&(ia->pos), map, team);
   ia->target_pos.x = -1;
   ia->target_pos.y = -1;
+  ref.old_pos.x = -1;
+  ref.old_pos.y = -1;
+  ref.new_pos.x = ia->pos.x;
+  ref.new_pos.y = ia->pos.y;
+  ref.team = team;
+  id_msg = msgget(ftok(getcwd(0,0), 42), SHM_R | SHM_W);
+  msgsnd(id_msg, &ref, sizeof(ref), 0);
 }

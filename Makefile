@@ -4,9 +4,9 @@ RM =		rm -f
 
 CFLAGS =	-Wall -Werror -Wextra -g3
 
-LDFLAGS =	
+LDFLAGS =	-lSDLmain -lSDL -lSDL_image	
 
-SRC =		main.c \
+SRC1 =		main.c \
 	        init.c \
 		map.c \
 		init_ia.c \
@@ -16,20 +16,29 @@ SRC =		main.c \
 		win.c \
 		move.c
 
-OBJ =		$(SRC:.c=.o)
+SRC2 =		gui.c
 
-NAME =		lemipc
+OBJ1 =		$(SRC1:.c=.o)
 
-all:		$(NAME)
+OBJ2 =		$(SRC2:.c=.o)
 
-$(NAME):	$(OBJ)
-	$(CC) $(LDFLAGS) $(OBJ) -o $(NAME)
+NAME1 =		lemipc
+
+NAME2 =		gui
+
+all:		lemipc gui
+
+lemipc:		$(OBJ1)
+	$(CC) $(CFLAGS) $(OBJ1) -o $(NAME1)
+
+gui:		$(OBJ2)
+	$(CC) $(CFLAGS) $(OBJ2) -o $(NAME2) $(LDFLAGS)
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJ1) $(OBJ2)
 
 fclean:		clean
-	$(RM) $(NAME)
+	$(RM) $(NAME1) $(NAME2)
 
 re: fclean all
 
