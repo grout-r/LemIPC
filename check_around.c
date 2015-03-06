@@ -5,7 +5,8 @@ t_pos		*incr_x(t_scan *scan)
 {
   while (scan->tmp->x != (scan->pos->x + (scan->segment - 1)))
     {
-      if (get_case(scan->tmp, scan->map) != 0 && get_case(scan->tmp, scan->map) != scan->ia->team)
+      if (get_case(scan->tmp, scan->map) != 0 && get_case(scan->tmp, scan->map) != scan->ia->team
+	  && get_case(scan->tmp, scan->map) != -1)
 	return (scan->tmp);
       scan->tmp->x++;
     }
@@ -16,7 +17,8 @@ t_pos		*incr_y(t_scan *scan)
 {
   while (scan->tmp->y != (scan->pos->y + (scan->segment - 1)))
     {
-      if (get_case(scan->tmp, scan->map) != 0 && get_case(scan->tmp, scan->map) != scan->ia->team)
+      if (get_case(scan->tmp, scan->map) != 0 && get_case(scan->tmp, scan->map) != scan->ia->team 
+	  && get_case(scan->tmp, scan->map) != -1)
 	return (scan->tmp);
       scan->tmp->y++;
     }
@@ -27,7 +29,8 @@ t_pos		*decr_x(t_scan *scan)
 {
   while (scan->tmp->x != scan->pos->x)
     {
-      if (get_case(scan->tmp, scan->map) != 0 && get_case(scan->tmp, scan->map) != scan->ia->team)
+      if (get_case(scan->tmp, scan->map) != 0 && get_case(scan->tmp, scan->map) != scan->ia->team 
+	  && get_case(scan->tmp, scan->map) != -1)
 	return (scan->tmp);
       scan->tmp->x--;
     }
@@ -38,7 +41,8 @@ t_pos		*decr_y(t_scan *scan)
 {
   while (scan->tmp->y != scan->pos->y)
     {
-      if (get_case(scan->tmp, scan->map) != 0 && get_case(scan->tmp, scan->map) != scan->ia->team)
+      if (get_case(scan->tmp, scan->map) != 0 && get_case(scan->tmp, scan->map) != scan->ia->team 
+	  && get_case(scan->tmp, scan->map) != -1)
 	return (scan->tmp);
       scan->tmp->y--;
     }
@@ -52,7 +56,7 @@ int		set_target(t_pos *pos, t_ia *ia)
   return (0);
 }
 
-int		check_around(t_pos *pos, t_map *map, t_ia *ia)
+int		check_around(t_pos *pos, t_map *map, t_ia *ia, int i)
 {
   t_pos		tmp;
   t_scan	scan;
@@ -67,7 +71,7 @@ int		check_around(t_pos *pos, t_map *map, t_ia *ia)
     return (set_target(pos, ia));
   scan.pos->x--;
   scan.pos->y--;
-  while (scan.segment < 10)
+  while (scan.segment < ((i * 2) + 2))
     {
       tmp.x = pos->x;
       tmp.y = pos->y;

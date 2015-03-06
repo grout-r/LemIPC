@@ -17,6 +17,8 @@ char		get_case(t_pos *pos,  t_map *map)
 
   id = map->head[pos->y];
   tmp = shmat(id, NULL, SHM_R | SHM_W);
+  if (x < 0 || x > 100 || y < 0 || y > 100)
+    return (-1);
   return (tmp[pos->x]);
 }
 

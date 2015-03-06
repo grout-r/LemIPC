@@ -1,6 +1,10 @@
 #!/bin/sh
 
-for ((i = 0; i < 100; i += 1))
+i=0
+
+while [ $i -le 50 ]
 do
-    ../lemipc a 2 &
+    echo "POUR LA VICTOIIIIIIRE"
+    ./lemipc 2 &
+    i=$(( $i + 1))
 done

@@ -9,17 +9,17 @@
 typedef struct	s_gui
 {
   SDL_Surface	*screen;
-  int	*color;
-}t_gui;
+  int		*color;
+}		t_gui;
 
 typedef struct	s_rgb
 {
-  int	r;
-  int	g;
-  int	b;
-}t_rgb;
+  int		r;
+  int		g;
+  int		b;
+}		t_rgb;
 
-int	init_gui(t_gui *gui, int *color)
+int		init_gui(t_gui *gui, int *color)
 {
   if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
@@ -39,12 +39,12 @@ int	init_gui(t_gui *gui, int *color)
   return (0);
 }
 
-int	*init_gui_map()
+int		*init_gui_map()
 {
-  char	*cwd;
-  key_t	map_key;
-  int	map_id;
-  int	*head;
+  char		*cwd;
+  key_t		map_key;
+  int		map_id;
+  int		*head;
 
   cwd = getcwd(0, 0);
   map_key = ftok(cwd, 0);
@@ -53,25 +53,25 @@ int	*init_gui_map()
   return (head);
 }
 
-t_rgb color_converter(int hex)
+t_rgb		color_converter(int hex)
 {
-  t_rgb rgb;
+  t_rgb		rgb;
 
   rgb.r = ((hex >> 16) & 0xFF);
   rgb.g = ((hex >> 8) & 0xFF);
   rgb.b = ((hex) & 0xFF);
-  return rgb; 
+  return (rgb); 
 }
 
-void	colorize_player(SDL_Surface *player, char team, t_gui *gui)
+void		colorize_player(SDL_Surface *player, char team, t_gui *gui)
 {
-  t_rgb	rgb;
+  t_rgb		rgb;
 
   rgb = color_converter(gui->color[(int)team]);
   SDL_FillRect(player, NULL, SDL_MapRGB(gui->screen->format, rgb.r, rgb.g, rgb.b));
 }
 
-void	init_color(int *color)
+void		init_color(int *color)
 {
   color[0] = 0x000000;
   color[1] = 0x5958A3;
@@ -85,7 +85,7 @@ void	init_color(int *color)
   color[9] = 0x001EFF;
 }
 
-void	load_player(int x, int y, char team,  t_gui *gui)
+void		load_player(int x, int y, char team,  t_gui *gui)
 {
   SDL_Surface	*player;
   SDL_Rect	pos;
@@ -98,12 +98,12 @@ void	load_player(int x, int y, char team,  t_gui *gui)
   SDL_Flip(gui->screen);
 }
 
-void	dump_map_gui(int *head, t_gui *gui)
+void		dump_map_gui(int *head, t_gui *gui)
 {
-  int	i;
-  int	y;
-  int	id;
-  char	*tmp;
+  int		i;
+  int		y;
+  int		id;
+  char		*tmp;
 
   i = 0;
   while (i != LIN_NBR)
@@ -120,11 +120,11 @@ void	dump_map_gui(int *head, t_gui *gui)
     }
 }
 
-int	main()
+int		main()
 { 
-  t_gui	gui;
-  int	*head;
-  int	color[10];
+  t_gui		gui;
+  int		*head;
+  int		color[10];
   SDL_Event	event;
 
   init_color(color);
