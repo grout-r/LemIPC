@@ -12,7 +12,9 @@ SRC =		main.c \
 		init_ia.c \
 		ia.c \
 		msgq.c \
-		check_around.c
+		check_around.c \
+		win.c \
+		move.c
 
 OBJ =		$(SRC:.c=.o)
 

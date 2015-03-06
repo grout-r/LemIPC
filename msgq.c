@@ -5,7 +5,7 @@
 ** Login   <giudici@epitech.net>
 ** 
 ** Started on  Wed Mar  4 15:50:27 2015 Giudici
-** Last update Thu Mar  5 16:53:24 2015 Giudici
+** Last update Thu Mar  5 21:35:55 2015 Giudici
 */
 
 #include "lemipc.h"
@@ -25,9 +25,12 @@ int		msg_receive(t_msg *msg, t_ia *ia)
   int		id_msg;
 
   id_msg = msgget(ia->key, SHM_R | SHM_W);
-  if (id_msg == -1)
-    return (-1);
-  msgrcv(id_msg, &msg, sizeof(msg), 42, 0);
+  if (id_msg == -1) {
+    putchar('z');
+      return (-1);
+    }
+  msgrcv(id_msg, msg, sizeof(msg), (int)ia->team, 0);
+  printf("\n\n\n\nmsg ------ x = %d && y = %d ----- \n\n\n", msg->pos.x, msg->pos.y);
   ia->target_pos.x = msg->pos.x;
   ia->target_pos.y = msg->pos.y;
   return (0);
@@ -37,11 +40,11 @@ int		msg_send(t_msg *msg, t_ia *ia)
 {
   int		id_msg;
 
-  printf("%d\n", ia->key);
   id_msg = msgget(ia->key, SHM_R | SHM_W);
   if (id_msg == -1)
     return (-1);
-  msgsnd(id_msg, &msg, sizeof(msg), msg->mtype);
+  printf("\n\n\n\nmsg ------ x = %d && y = %d ----- \n\n\n", msg->pos.x, msg->pos.y);
+  msgsnd(id_msg, msg, sizeof(msg), msg->mtype);
   msgctl(id_msg, IPC_RMID, NULL);
   return (0);
 }
@@ -55,4 +58,24 @@ t_msg		construct_msg(int x, int y, int type)
   msg.pos.y = y;
   msg.mtype = type;
   return (msg);
+}
+
+void		free_msg()
+{
+  int		i;
+  key_t		key;
+  int		id_msg;
+  char		c;
+
+  i = 0;
+  while (i != 15)
+    {
+      c = i;
+      key = ftok(getcwd(0, 0), c);
+      id_msg = msgget(key, SHM_R | SHM_W);
+      if (id_msg == -1)
+	puts("chelouuuu");
+      msgctl(id_msg, IPC_RMID, NULL);
+      i = i + 1;
+    }
 }

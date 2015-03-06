@@ -1,3 +1,12 @@
+/*
+** check_around.c for lemipc in /home/giudici/rendu/lemipc/LemIPC
+** 
+** Made by Giudici
+** Login   <giudici@epitech.net>
+** 
+** Started on  Fri Mar  6 15:54:18 2015 Giudici
+** Last update Fri Mar  6 15:54:19 2015 Giudici
+*/
 
 #include "lemipc.h"
 
