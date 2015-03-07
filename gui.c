@@ -20,6 +20,7 @@ typedef struct	s_rgb
   int		b;
 }		t_rgb;
 
+
 int		init_gui(t_gui *gui, int *color)
 {
   if (SDL_Init(SDL_INIT_VIDEO) == -1)
@@ -40,15 +41,44 @@ int		init_gui(t_gui *gui, int *color)
   return (0);
 }
 
-t_rgb		color_converter(int hex)
+int*	init_gui_map()
 {
-  t_rgb		rgb;
+  char	*cwd;
+  key_t	map_key;
+  int	map_id;
+  int	*head;
 
-  rgb.r = ((hex >> 16) & 0xFF);
-  rgb.g = ((hex >> 8) & 0xFF);
-  rgb.b = ((hex) & 0xFF);
-  return (rgb); 
+  cwd = getcwd(0, 0);
+  map_key = ftok(cwd, 0);
+  map_id = shmget(map_key, sizeof(char) * COL_NBR, SHM_R | SHM_W);
+  head = shmat(map_id, NULL, SHM_R | SHM_W);
+  return (head);
 }
+
+ t_rgb		color_converter(int hex)
+  {
+    t_rgb		rgb;
+
+    rgb.r = ((hex >> 16) & 0xFF);
+    rgb.g = ((hex >> 8) & 0xFF);
+    rgb.b = ((hex) & 0xFF);
+    return (rgb); 
+  }
+
+
+  void		init_color(int *color)
+  {
+    color[0] = 0x000000;
+    color[1] = 0x5958A3;
+    color[2] = 0xE61732;
+    color[3] = 0x17E6C0;
+    color[4] = 0x40E617;
+    color[5] = 0xE5FF00;
+    color[6] = 0xFF00D0;
+    color[7] = 0xFF4800;
+    color[8] = 0x00FFAA;
+    color[9] = 0x001EFF;
+  }
 
 void		colorize_player(SDL_Surface *player, char team, t_gui *gui)
 {
@@ -58,78 +88,88 @@ void		colorize_player(SDL_Surface *player, char team, t_gui *gui)
   SDL_FillRect(player, NULL, SDL_MapRGB(gui->screen->format, rgb.r, rgb.g, rgb.b));
 }
 
-void		init_color(int *color)
-{
-  color[0] = 0x000000;
-  color[1] = 0x5958A3;
-  color[2] = 0xE61732;
-  color[3] = 0x17E6C0;
-  color[4] = 0x40E617;
-  color[5] = 0xE5FF00;
-  color[6] = 0xFF00D0;
-  color[7] = 0xFF4800;
-  color[8] = 0x00FFAA;
-  color[9] = 0x001EFF;
-}
+  void		load_player(int x, int y, char team,  t_gui *gui)
+  {
+    SDL_Surface	*player;
+    SDL_Rect	pos;
 
-void		load_player(int x, int y, char team,  t_gui *gui)
-{
-  SDL_Surface	*player;
-  SDL_Rect	pos;
+    pos.x = x * 10;
+    pos.y = y * 10;
+    player = SDL_CreateRGBSurface(SDL_HWSURFACE, 10, 10, 32, 0, 0, 0, 0);
+    colorize_player(player, team, gui);
+    SDL_BlitSurface(player, NULL, gui->screen, &pos);
+    SDL_Flip(gui->screen);
+  }
 
-  pos.x = x * 10;
-  pos.y = y * 10;
-  player = SDL_CreateRGBSurface(SDL_HWSURFACE, 10, 10, 32, 0, 0, 0, 0);
-  colorize_player(player, team, gui);
-  SDL_BlitSurface(player, NULL, gui->screen, &pos);
-  SDL_Flip(gui->screen);
-}
+  int		dump_map_gui(t_gui *gui)
+  {
 
-int		dump_map_gui(t_gui *gui)
-{
+    key_t		msgkey;
+    int		msgid;
+    t_refresh	ref;
 
-  key_t		msgkey;
-  int		msgid;
-  t_refresh	ref;
+    msgkey = ftok(getcwd(0, 0), 42);
+    msgid = msgget(msgkey, SHM_R | SHM_W);
+    puts("42");
+    if (msgid == -1)
+      {
+	msgid = msgget(msgkey, IPC_CREAT | SHM_R | SHM_W);
+	puts("a");
+	msgrcv(msgid, &ref, sizeof(ref), 42, IPC_NOWAIT);
+	puts("b");
+	load_player(ref.old_pos.x, ref.old_pos.y, 0, gui);
+	load_player(ref.new_pos.x, ref.new_pos.y, ref.team, gui);
+	printf("old = %d --- %d || new = %d --- %d || team %c \n", ref.old_pos.x, ref.old_pos.y, ref.new_pos.x, ref.new_pos.y, ref.team);
+	puts("c");
+	return (0);
+      }
+    puts("d");
+    msgrcv(msgid, &ref, sizeof(ref), 0, IPC_NOWAIT);
+    putchar('e');
+    printf("old = %d --- %d || new = %d --- %d || team %c \n", ref.old_pos.x, ref.old_pos.y, ref.new_pos.x, ref.new_pos.y, ref.team);
+    load_player(ref.old_pos.x, ref.old_pos.y, 0, gui);
+    load_player(ref.new_pos.x, ref.new_pos.y, ref.team, gui);
+    return (0);
+  }
 
-  msgkey = ftok(getcwd(0, 0), 42);
-  msgid = msgget(msgkey, SHM_R | SHM_W);
-  puts("42");
-  if (msgid == -1)
-    {
-      msgid = msgget(msgkey, IPC_CREAT | SHM_R | SHM_W);
-      puts("a");
-      msgrcv(msgid, &ref, sizeof(ref), 42, 0);
-      puts("b");
-      load_player(ref.old_pos.x, ref.old_pos.y, 0, gui);
-      load_player(ref.new_pos.x, ref.new_pos.y, ref.team, gui);
-      printf("old = %d --- %d || new = %d --- %d || team %c \n", ref.old_pos.x, ref.old_pos.y, ref.new_pos.x, ref.new_pos.y, ref.team);
-      puts("c");
-      return (0);
-    }
-  puts("d");
-  msgrcv(msgid, &ref, sizeof(ref), 0, 0);
-  putchar('e');
-  printf("old = %d --- %d || new = %d --- %d || team %c \n", ref.old_pos.x, ref.old_pos.y, ref.new_pos.x, ref.new_pos.y, ref.team);
-  load_player(ref.old_pos.x, ref.old_pos.y, 0, gui);
-  load_player(ref.new_pos.x, ref.new_pos.y, ref.team, gui);
-  return (0);
-}
+void	dump_map_gui_first(int *head, t_gui *gui)
+  {
+    int	i;
+    int	y;
+    int	id;
+    char*tmp;
 
-int		main()
-{ 
-  t_gui		gui;
-  int		color[10];
-  SDL_Event	event;
+    i = 0;
+    while (i != LIN_NBR)
+      {
+	id = head[i];
+	tmp = shmat(id, NULL, SHM_R | SHM_W);
+	y = 0;
+	while (y != COL_NBR)
+	  {
+	    load_player(i, y, tmp[y], gui);
+	    y++;
+	  }
+	i++; 
+      }
+  }
 
-  init_color(color);
-  if (init_gui(&gui, color) == -1)
-    return (-1);
-  SDL_PollEvent(&event);
-  while(event.type != SDL_QUIT)
-    {
-      SDL_PollEvent(&event);
-      dump_map_gui(&gui);
-    }
-  return 0;
-}
+  int		main()
+  { 
+    t_gui		gui;
+    int		color[10];
+    SDL_Event	event;
+    int		*head = init_gui_map();
+
+    init_color(color);
+    if (init_gui(&gui, color) == -1)
+      return (-1);
+    dump_map_gui_first(head , &gui);
+    SDL_PollEvent(&event);
+    while(event.type != SDL_QUIT)
+      {
+	SDL_PollEvent(&event);
+	dump_map_gui(&gui);
+      }
+    return 0;
+  }
